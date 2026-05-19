@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Chatbot - Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+  body { 
+    margin: 0; 
+    background: linear-gradient(120deg, #ffe0d1, #ebb9b0);
+    display: flex; flex-direction: column; 
+    align-items: center; justify-content: flex-start; 
+    min-height: 100vh; 
+  }
+
+  .header { 
+    width: 100%;  
+    background: linear-gradient(135deg, #FFBCB0, #FFE0D1);
+    padding: 15px 30px; color: white; 
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; 
+  }
+
+  .header h3 { margin: 0; font-size: 16px; font-weight: bold; text-transform: uppercase; }
+  .header p { margin: 5px 0 0; font-size: 13px; }
+
+  .main-content { 
+    display: flex; gap: 80px; margin-top: 50px; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+
+  @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+  .video-section { 
+    width: 400px; height: 300px; display: flex; flex-direction: column; 
+    align-items: center; justify-content: center; text-align: center;
+    margin-top: 100px;
+    opacity: 0; transform: translateX(-50px);
+    animation: slideLeft 1s forwards 0.3s;
+  }
+
+  /* ✅ THEME FIX APPLIED HERE ONLY */
+  .form-container {     
+    background: linear-gradient(135deg, #FFBCB0, #FFE0D1);
+    padding: 40px 30px; width: 550px; border-radius: 20px; 
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3); 
+    opacity: 0; transform: translateX(50px);
+    animation: slideRight 1s forwards 0.5s;
+  }
+
+  @keyframes slideLeft { 0% { opacity: 0; transform: translateX(-50px); } 100% { opacity: 1; transform: translateX(0); } }
+  @keyframes slideRight { 0% { opacity: 0; transform: translateX(50px); } 100% { opacity: 1; transform: translateX(0); } }
+
+  h2 { text-align: center; margin-bottom: 25px; color: #ffffff; }
+
+  .input-group { margin: 15px 0; }
+  .input-group input { width: 100%; padding: 12px 20px; border: 2px solid #ccc; border-radius: 25px; background: #f9f9f9; font-size: 14px; transition: 0.3s ease; }
+  .input-group input:focus { border-color: #046307; outline: none; background: #fff; }
+
+  .error { color: red; font-size: 12px; margin-top: 5px; }
+
+/* Register Button Updated */
+.register-btn { 
+  background: #ffffff;
+  color: #AD4A4A;
+  border: none; 
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.register-btn:hover { 
+  background: #FFBCB0;
+  color: #6A1E1E;
+  transform: scale(1.05);
+}
+
+  .login-link { text-align: center; margin-top: 15px; font-size: 14px; }
+  .login-link a { color:#ffffff; text-decoration: none; font-weight: bold; }
+  .login-link a:hover { text-decoration: underline;}
+
+  .video-section video { width: 100%; height: 100%; border-radius: 20px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+
+  .animated-text { font-size: 40px; color: #ffffff; margin-top: 25px; font-weight: bold; animation: fadeText 1.5s ease-in-out infinite alternate; }
+  @keyframes fadeText { 0% { opacity: 0.2; } 100% { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h3>Ramniranjan Jhunjhunwala College of Arts, Commerce and Science (Autonomous)</h3>
+    <p>Opposite Ghatkopar Railway Station West Mumbai-400086, Maharashtra, India</p>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="video-section">
+    <video src="Ai.mp4" autoplay muted loop></video>
+    <div class="animated-text" id="animatedText">Welcome to College Chatbot</div>
+  </div>
+
+  <div class="form-container">
+    <h2>Create A New Account</h2>
+    <form id="registerForm" action="r.php" method="POST" onsubmit="return validateRegisterForm()">
+
+      <div class="input-group">
+        <input type="text" id="name" name="Fullname" autocomplete="off" placeholder="Full Name" />
+        <div id="nameError" class="error"></div>
+      </div>
+
+      <div class="input-group" style="position:relative;">
+        <input type="text" id="email" name="Email" autocomplete="off" placeholder="Email" style="padding-right:100px;" />
+        <span id="emailSuffix" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#555;">@gmail.com</span>
+        <div id="emailError" class="error"></div>
+      </div>
+
+      <div class="input-group">
+        <input type="number" id="phone" name="Phone" autocomplete="off" maxlength="10" placeholder="Phone Number">
+        <div id="phoneError" class="error"></div>
+      </div>
+
+      <div class="input-group">
+        <input type="number" id="psid" name="psid" autocomplete="off" maxlength="8" placeholder="Student PSID (8 digits)">
+        <div id="psidError" class="error"></div>
+      </div>
+
+      <div class="input-group">
+        <input type="number" id="password" name="Pass" maxlength="6" placeholder="Enter 6-digit password">
+        <div id="passError" class="error"></div>
+      </div>
+
+      <div class="input-group">
+        <input type="number" id="confirmPassword" name="ConfirmPass" maxlength="6" placeholder="Confirm Password">
+        <div id="confirmPassError" class="error"></div>
+      </div>
+
+      <button class="register-btn">Register</button>
+
+    </form>
+
+    <div class="login-link">
+      Already have an account? <a href="l.html">Login</a>
+    </div>
+
+  </div>
+</div>
+
+<br>
+
+<script>
+const chatbotMessages = [
+  "👋 Welcome to RJ College Chatbot!",
+  "📚 Ask anything about courses, admission & more.",
+  "📝 Get updates on exams, events, and etc...",
+  "🎓 Smart help for students, anytime 24x7.",
+  "💬 Just type your question. I’m always here!"
+];
+let index = 0;
+setInterval(() => {
+  index = (index + 1) % chatbotMessages.length;
+  document.getElementById("animatedText").textContent = chatbotMessages[index];
+}, 3000);
+
+function validateRegisterForm() {
+  let name = document.getElementById("name").value.trim();
+  let email = document.getElementById("email").value.trim();
+  let phone = document.getElementById("phone").value.trim();
+  let ps = document.getElementById("psid").value.trim();
+  let password = document.getElementById("password").value.trim();
+  let confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+  let isValid = true;
+
+  document.getElementById("nameError").innerText = "";
+  document.getElementById("emailError").innerText = "";
+  document.getElementById("phoneError").innerText = "";
+  document.getElementById("psidError").innerText = "";
+  document.getElementById("passError").innerText = "";
+  document.getElementById("confirmPassError").innerText = "";
+
+  if (name === "") {
+    document.getElementById("nameError").innerText = "Name is required*";
+    isValid = false;
+  }
+
+  if (email === "") {
+    document.getElementById("emailError").innerText = "Email is required*";
+    isValid = false;
+  } else {
+    email = email + "@gmail.com";
+    document.getElementById("email").value = email;
+    const emailRegex = /^[^\s@]+@gmail\.com$/;
+    if (!emailRegex.test(email)) {
+      document.getElementById("emailError").innerText = "Invalid Gmail address*";
+      isValid = false;
+    }
+  }
+
+  if (phone === "" || phone.length !== 10) {
+    document.getElementById("phoneError").innerText = "Valid 10-digit phone number required*";
+    isValid = false;
+  }
+
+  if (ps === "" || ps.length !== 8) {
+    document.getElementById("psidError").innerText = "PSID must be exactly 8 digits*";
+    isValid = false;
+  }
+
+  if (password === "" || password.length !== 6) {
+    document.getElementById("passError").innerText = "Password must be exactly 6 digits*";
+    isValid = false;
+  }
+
+  if (confirmPassword !== password) {
+    document.getElementById("confirmPassError").innerText = "Passwords do not match*";
+    isValid = false;
+  }
+
+  return isValid;
+}
+</script>
+
+</body>
+</html>

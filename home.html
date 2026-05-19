@@ -1,0 +1,413 @@
+<?php
+$host = "localhost";
+$user = "root";   // default XAMPP username
+$pass = "";       // default XAMPP password blank hota hai
+$db   = "chatbot";
+
+$conn = new mysqli($host, $user, $pass, $db);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylesDashboead.css">
+
+    <style>
+        /* General Styles */
+        :root {
+            --background-color4: #f4f4f4;
+            --background-color2: #ffffff;
+            --Border-color: #407BFF;
+            --one-use-color: #407BFF;
+            --two-use-color: #407BFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color4);
+            max-width: 100%;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            color: #222;
+        }
+
+        header {
+            height: 70px;
+            width: 100vw;
+            padding: 0 30px;
+            background-color: #407BFF;
+            position: fixed;
+            z-index: 100;
+            box-shadow: 1px 1px 15px rgba(161, 182, 253, 0.825);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: 600;
+            color: rgb(47, 141, 70);
+        }
+
+        .menuicn {
+            cursor: pointer;
+        }
+
+        .main-container {
+            display: flex;
+            width: 100%; /* full width for responsiveness */
+            position: relative;
+            top: 70px;
+            z-index: 1;
+            overflow-x: hidden; /* prevent unwanted horizontal scroll */
+        }
+
+        .main {
+            height: calc(100vh - 70px);
+            width: 100%;
+            padding: 40px 30px 30px 30px;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar styling only for table */
+        .table-container {
+            width: 100%;
+            max-height: 500px;
+            overflow-x: auto; /* only scroll if table wider */
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            word-wrap: break-word;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Buttons */
+        .view-toggle {
+            padding: 6px 15px;
+            margin-left: 10px;
+            background: #407BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .view-toggle:hover {
+            background: #4a0da8;
+        }
+
+        .view {
+            height: 35px;
+            width: 90px;
+            border-radius: 8px;
+            background-color: #407BFF;
+            color: white;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #181818;
+            color: #f5f5f5;
+        }
+
+        body.dark-mode table {
+            background-color: #333;
+            color: #fff;
+        }
+
+        body.dark-mode th {
+            background-color: #444;
+        }
+
+        body.dark-mode td {
+            background-color: #333;
+        }
+
+        /* Responsive */
+        @media screen and (max-width: 1100px) {
+            .main {
+                padding: 40px 20px 30px 20px;
+            }
+        }
+
+        @media screen and (max-width: 850px) {
+            .main {
+                padding: 40px 15px 30px 15px;
+            }
+        }
+
+        @media screen and (max-width: 500px) {
+            .recent-Articles {
+                font-size: 18px;
+            }
+
+            .view {
+                width: 60px;
+                font-size: 12px;
+                height: 27px;
+            }
+
+            .view-toggle {
+                font-size: 12px;
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="logosec">
+            <div class="logo">Admin</div>
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182541/Untitled-design-(30).png"
+                class="icn menuicn" id="menuicn" alt="menu-icon">
+        </div>
+
+        <div class="message">
+            <div class="circle"></div>
+            <!-- Dark Mode Toggle -->
+            <div class="theme-toggle" id="themeToggle">
+                <i class="fa-solid fa-moon" id="themeIcon" style="font-size: 24px; color: white; cursor: pointer;"></i>
+            </div>
+
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/8.png" class="icn" alt="">
+            <div class="dp">
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20221210180014/profile-removebg-preview.png"
+                    class="dpicn" alt="dp">
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <div class="navcontainer">
+            <nav class="nav">
+                <div class="nav-upper-options">
+                    <div class="nav-option option1">
+                        <i class="fa-solid fa-gauge" style="color:white; font-size: 28px;"></i>
+                        <a href="dashboard.php" style="text-decoration: none; color: inherit;">
+                            <h3>Dashboard</h3>
+                        </a>
+                    </div>
+                    <div class="nav-option option2">
+                        <i class="fa-solid fa-pen-to-square" style="color: var(--Border-color); font-size: 28px;"></i>
+                        <a href="#" onclick="loadPage('admin.php')" style="text-decoration: none; color: inherit;">
+                            <h3>CRUD</h3>
+                        </a>
+                    </div>
+                    <div class="nav-option option3">
+                        <i class="fa-solid fa-address-book" style="color: var(--Border-color); font-size: 28px;"></i>
+                        <a href="contact-lead.php" style="text-decoration: none; color: inherit;">
+                            <h3>Contact Leads</h3>
+                        </a>
+                    </div>
+                    <div class="nav-option option4">
+                        <i class="fa-solid fa-comments" style="color: var(--Border-color); font-size: 28px;"></i>
+                        <a href="remark.php" style="text-decoration: none; color: inherit;">
+                            <h3>Remark</h3>
+                        </a>
+                    </div>
+                    <div class="nav-option option5">
+                        <i class="fa-solid fa-key" style="color: var(--Border-color); font-size: 28px;"></i>
+                        <a href="password-reset.php" style="text-decoration: none; color: inherit;">
+                            <h3>Password Reset</h3>
+                        </a>
+                    </div>
+                    <div class="nav-option option6">
+                        <i class="fa-solid fa-user" style="color: var(--Border-color); font-size: 28px;"></i>
+                        <a href="profile.php" style="text-decoration: none; color: inherit;">
+                            <h3>Profile</h3>
+                        </a>
+                    </div>
+                    <div class="nav-option logout">
+                        <i class="fa-solid fa-right-from-bracket" style="color: var(--Border-color); font-size: 28px;"></i>
+                        <a href="logout.php" style="text-decoration: none; color: inherit;">
+                            <h3>Logout</h3>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="main">
+            <!-- TABLE -->
+            <div class="report-container">
+                <div class="report-header">
+                    <h1 class="recent-Articles">User Registration Data</h1>
+                    <div class="button-container">
+                        <button id="download-btn" class="view">Download</button>
+                        <button id="toggleBtn" class="view-toggle">View All</button>
+                    </div>
+                </div>
+
+                <div class="report-body">
+                    <div class="table-container">
+                        <table id="data-table">
+                            <thead>
+                                <tr>
+                                    <th>NO.</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Password</th>
+                                    <th>Phone</th>
+                                    <th>PS ID</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql = "SELECT * FROM user";
+                                $result = $conn->query($sql);
+                                $i = 1;
+
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>
+                                                <td>".$i++."</td>
+                                                <td>".$row['Fullname']."</td>
+                                                <td>".$row['Email']."</td>
+                                                <td>".$row['Pass']."</td>
+                                                <td>".$row['phone']."</td>
+                                                <td>".$row['psid']."</td>
+                                            </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='6'>No records found</td></tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+let menuicn = document.querySelector(".menuicn");
+let nav = document.querySelector(".navcontainer");
+
+menuicn.addEventListener("click", () => {
+    nav.classList.toggle("navclose");
+});
+
+// Download table as CSV
+document.getElementById("download-btn").addEventListener("click", () => {
+    let csvContent = "";
+    const rows = document.querySelectorAll("#data-table tr");
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll("th, td");
+        const rowData = Array.from(cells).map(cell => cell.textContent).join(",");
+        csvContent += rowData + "\n";
+    });
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const downloadLink = document.createElement("a");
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = "user_data.csv";
+    downloadLink.click();
+});
+
+function loadPage(page) {
+    fetch(page)
+        .then(response => response.text())
+        .then(data => {
+            document.querySelector('.main').innerHTML = data;
+        });
+}
+
+// View All / View Less toggle
+let showingAll = false;
+function toggleRows() {
+    const table = document.getElementById("data-table");
+    const rows = table.getElementsByTagName("tr");
+    const btn = document.getElementById("toggleBtn");
+
+    if (!showingAll) {
+        for (let i = 1; i < rows.length; i++) {
+            rows[i].style.display = "";
+        }
+        btn.innerText = "View Less";
+        showingAll = true;
+    } else {
+        for (let i = 1; i < rows.length; i++) {
+            rows[i].style.display = (i <= 5) ? "" : "none";
+        }
+        btn.innerText = "View All";
+        showingAll = false;
+    }
+}
+
+// Default: show only 5 rows
+window.onload = function() {
+    toggleRows();
+};
+
+document.getElementById("toggleBtn").addEventListener("click", toggleRows);
+
+// Dark Mode
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    if (document.body.classList.contains("dark-mode")) {
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+    } else {
+        themeIcon.classList.remove("fa-sun");
+        themeIcon.classList.add("fa-moon");
+    }
+});
+</script>
+
+</body>
+</html>
