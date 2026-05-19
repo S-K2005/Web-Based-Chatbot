@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Chatbot - Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #ffe0d1, #ebb9b0);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      width: 100%;
+      background: linear-gradient(135deg, #FFBCB0, #FFE0D1);
+      padding: 15px 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .header h3, .header p {
+      margin: 0;
+      color: white;
+    }
+
+    .header h3 {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    .container {
+      display: flex;
+      margin-top: 80px;
+      background: linear-gradient(135deg, #FFBCB0, #FFE0D1);
+      backdrop-filter: blur(12px);
+      width: 850px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .left, .right {
+      flex: 1;
+      padding: 40px 30px;
+      animation: slideIn 1s ease-in-out;
+    }
+
+    .left {
+      background: linear-gradient(135deg, #FFBCB0, #FFBCB0);
+      color: #6A1E1E;
+      animation-delay: 0.2s;
+    }
+
+    .right {
+      background: linear-gradient(135deg, #FFE0D1, #FFBCB0);
+      color:white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation-delay: 0.4s;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(-50px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    .right h2 {
+      margin-bottom: 10px;
+    }
+
+    .right p {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .right button {
+      background: #ffffff;
+      color: #AD4A4A;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .right button:hover {
+      background: #FFCBC0;
+      transform: scale(1.05);
+      color:#6A1E1E;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .input-group {
+      margin: 15px 0;
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 20px;
+      border: 2px solid #ccc;
+      border-radius: 25px;
+      background: #fff;
+      color: #6A1E1E;
+      font-size: 14px;
+      transition: 0.3s ease;
+    }
+
+    .input-group input:focus {
+      border-color: #FF8F8F;
+      outline: none;
+      background: #fff;
+    }
+
+    .forgot {
+      font-size: 13px;
+      color: #AD4A4A;
+      text-align: right;
+      margin-top: 5px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .forgot:hover {
+      text-decoration: underline;
+      color: #6A1E1E;
+    }
+
+    .login-btn {
+      background: #ffffff;
+      color: #AD4A4A;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+      background: #FFCBC0;
+      transform: scale(1.05);
+      color:#6A1E1E;
+    }
+
+    .error {
+      color:red;
+      font-size: 12px;
+      margin-top: 5px;
+      margin-left: 10px;
+      text-align: left;
+    }
+
+    .input-group i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #AD4A4A;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h3>Ramniranjan Jhunjhunwala College of Arts , Commerce and Science (Autonomous)</h3>
+      <p>Opposite Ghatkopar Railway Station West Mumbai-400086, Maharashtra, India</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="left">
+      <h2>SIGN IN</h2>
+
+      <form id="loginForm" method="POST" action="user.php" onsubmit="return validateForm()">
+        <div class="input-group">
+          <input type="number" id="psid" name="psid" autocomplete="off" pattern="[0-9]{8}" maxlength="8" placeholder="PSID."
+            oninput="if(this.value.length>8) this.value=this.value.slice(0,8)">
+        </div>
+        <div id="userError" class="error"></div>
+
+        <div class="input-group">
+          <input type="password" id="password" name="pass" autocomplete="off"
+            pattern="[0-9]{6}" maxlength="6" placeholder="Password"
+            oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,6)">
+          <i class="fa fa-eye" id="togglePassword"></i>
+        </div>
+        <div id="passError" class="error"></div>
+
+        <div class="forgot" onclick="forgotPassword()">Forgot password?</div>
+        <button class="login-btn">Login</button>
+      </form>
+    </div>
+
+    <div class="right">
+      <h2>SIGN UP</h2>
+      <p>Your college assistant is<br>just one step away.<br>Sign up and start chatting!</p>
+      <button onclick="window.location.href='register.html'">Create a new Account</button>
+    </div>
+  </div>
+
+  <script>
+    function validateForm() {
+      const username = document.getElementById("psid").value.trim();
+      const password = document.getElementById("password").value.trim();
+      let isValid = true;
+
+      document.getElementById("userError").innerText = "";
+      document.getElementById("passError").innerText = "";
+
+      if (username === "") {
+        document.getElementById("userError").innerText = "PS ID is required*";
+        isValid = false;
+      }
+
+      if (password === "") {
+        document.getElementById("passError").innerText = "Password is required*";
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    function forgotPassword() {
+      window.location.href = "EmailTesting.php";
+    }
+
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", () => {
+      const isPassword = passwordInput.getAttribute("type") === "password";
+
+      if (isPassword) {
+        passwordInput.setAttribute("type", "text");
+        togglePassword.classList.remove("fa-eye-slash");
+        togglePassword.classList.add("fa-eye");
+      } else {
+        passwordInput.setAttribute("type", "password");
+        togglePassword.classList.remove("fa-eye");
+        togglePassword.classList.add("fa-eye-slash");
+      }
+
+      togglePassword.classList.add("blink");
+      setTimeout(() => {
+        togglePassword.classList.remove("blink");
+      }, 300);
+    });
+  </script>
+
+</body>
+</html>
