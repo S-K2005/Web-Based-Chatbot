@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Chatbot</title>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+  body, html { height: 100%; }
+
+  /* ===== HEADER ===== */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background: linear-gradient(135deg, #FFBCB0, #FFE0D1);
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+  }
+
+  .logo { display: flex; align-items: center; font-size: 24px; font-weight: bold; color:white;}
+  .logo img { height: 50px; width: 50px; border-radius: 10%; margin-right: 10px; border: 2px solid #FF8F8F; }
+
+  nav ul { list-style: none; display: flex; gap: 10px; }
+  nav ul li a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #FFBCB0, #FF8F8F);
+    color: #fff;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  nav ul li a:hover { background: rgba(255,255,255,0.35); }
+
+  /* ===== HERO SECTION ===== */
+  .hero-section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(120deg, #FFE0D1, #FFBCB0);
+    color: #6A1E1E;
+    overflow: hidden;
+    flex-direction: column;
+    padding: 0 20px;
+  }
+
+  /* Floating chatbot image */
+  .hero-image {
+    position: absolute;
+    top: 50%;
+    left: 1%;
+    width: 380px;
+    border-radius: 15px;
+    animation: float 4s ease-in-out infinite;
+    z-index: 2;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.25));
+  }
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
+  }
+
+  /* College Name (White Added) */
+  h1 {
+    font-size: 65px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+    z-index: 1;
+    margin-top: 30px;
+    color: white;
+ text-shadow: 2px 3px 15px #FF8F8F;
+    animation: fadeInUp 2s ease forwards;
+  }
+
+  /* Tagline */
+  .tagline {
+    font-size: 22px;
+    margin-top: 35px;
+    max-width: 800px;
+    line-height: 1.5;
+    font-weight: 500;
+    color: white;
+    z-index: 1;
+    animation: fadeInUp 2s ease 0.5s forwards;
+    opacity: 0;
+  }
+
+  /* Button */
+  .btn-hero {
+    margin-top: 35px;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: 600;
+    border-radius: 50px;
+    background: #fff;
+    color: #AD4A4A;
+    text-decoration: none;
+    animation: fadeInUp 2s ease 1s forwards;
+    opacity: 0;
+    transition: 0.3s;
+  }
+  .btn-hero:hover { background: #FFCBC0; color: ##FF8F8F; transform: translateY(-5px); }
+
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(50px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 992px) {
+    .hero-image { left: 5%; width: 260px; top: 60%; }
+    h1 { font-size: 50px; margin-top: 160px; }
+    .tagline { font-size: 19px; }
+  }
+
+  @media (max-width: 600px) {
+    .hero-image {
+      position: static;
+      margin-top: -110px;
+      width: 200px;
+      animation: float 4s ease-in-out infinite;
+    }
+    h1 { font-size: 36px; margin-top: 15px; }
+    .tagline { font-size: 16px; margin-top: 18px; }
+    .btn-hero { font-size: 16px; padding: 12px 28px; }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <img src="logo1.png" alt="QueryHub" />
+    <span>QueryHub</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="l.html">Login</a></li>
+      <li><a href="register.html">Register</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero-section">
+  <img src="chatbot.png" alt="Chatbot" class="hero-image">
+
+  <h1>
+    RAMNIRANJAN JHUNJHUNWALA<br>
+    EMPOWERED AUTONOMOUS<br>
+    COLLEGE
+  </h1>
+
+  <p class="tagline">
+    Your college assistant is here to help you with all your questions. Get quick answers and support anytime to make student life easier.
+  </p>
+
+  <a href="l.html" class="btn-hero">Get Started</a>
+</section>
+
+</body>
+</html>
